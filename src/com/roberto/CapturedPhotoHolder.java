@@ -28,4 +28,9 @@ public class CapturedPhotoHolder {
 	public boolean hasData() {
 		return _hasData;
 	}
+	
+	public void clearData() {
+		_photoData = null;
+		_hasData = false;
+	}
 }

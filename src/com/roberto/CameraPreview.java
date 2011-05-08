@@ -28,6 +28,7 @@ import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -75,6 +76,9 @@ public class CameraPreview extends Activity {
 		super.onResume();
 
 		mCamera = Camera.open();
+		Camera.Parameters parameters = mCamera.getParameters();
+		parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+		mCamera.setParameters(parameters);
 	}
 
 	@Override
@@ -136,12 +140,16 @@ public class CameraPreview extends Activity {
 		public void surfaceChanged(SurfaceHolder holder, int format, int width,
 				int height) {
 			Camera.Parameters parameters = mCamera.getParameters();
-			Camera.Size size = getBestPreviewSize(width, height, parameters);
+			Camera.Size size = getBestPreviewSize(width, height, parameters);						
 
 			if (size != null) {
+				/*Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();				
+				mCamera.setDisplayOrientation(display.getRotation());*/
 				parameters.setPreviewSize(size.width, size.height);
+				parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);				
 				mCamera.setParameters(parameters);
 				mCamera.startPreview();
+				mCamera.autoFocus(null);
 				inPreview = true;
 			}
 		}
